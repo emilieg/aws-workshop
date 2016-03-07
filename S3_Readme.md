@@ -4,7 +4,7 @@
 *After this lesson, students will be able to:*
 
 - Describe S3 storage usages
-- Utilize S3, Route 53, and Cloudfront for static content
+- Utilize S3 to store files and host website and Route53 for domain routing
 - Create and upload static content for a website
 
 ### Preparation
@@ -30,7 +30,7 @@ One of the major uses of S3 is hosting a static website. S3 now has functionalit
 
 ![S3 Static Website](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_Architecture_4b.png)
 
-To get our static site up and running we're going to be using not only S3 but also two other Amazon services. Route53 for DNS resolution and Amazon Cloudfront for CDN functionality.
+To get our static site up and running we're going to be using not only S3 but also two other Amazon services. We'll also use Route53 for DNS resolution.
 
 First we'll create our S3 buckets. We're going to be creating 3 different buckets for our site. Two will be linked to our domain and the 3rd will be for logs that S3 produces. This structure is recognized and utilized by S3 for static sites. **Important** Be sure to name the buckets the same name as your domain, whatever that may be!
 
