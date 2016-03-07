@@ -1,21 +1,4 @@
-> #### *Guiding Questions When Using This Template*
->
-> - [ ] If there is an existing resource, is there enough content for an hour and fifteen minutes?
->   - [ ] Are there enough learning objectives?*
->   - [ ] Are the learning objectives specific enough?
->
-> - [ ] Are the learning objectives measurable?
->   - [ ] Do these learning objectives help students work toward the unit project?
->   - [ ] How will this lesson culminate? (final activity + conclusion)
->
-> Use this to provide guidance on what you should add to the existing resource
->
-> - [ ] What will instructors have to do to prepare for this lesson?
-> - [ ] What will students have to do to prepare for this lesson?
->
-> _\* We normally see ~3 objectives for this length of lesson, but you should adapt based on the topic / context._
-
-# Amazon Web Services
+# Amazon Web Services - EC2
 
 ### Objectives
 *After this lesson, students will be able to:*
