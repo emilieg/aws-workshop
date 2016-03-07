@@ -117,6 +117,23 @@ Click Save and you're done! You've just hosted a static website on S3, nice job!
 
 ## Independent Practice (20 minutes)
 
+##Front end (Javascript) Libraries
+
+| purpose | home page | demos |
+|----|----|----|
+| Drawing / visual | [http://svgjs.com/](http://svgjs.com/) | obvious on homepage |
+| Drawing / visual | [http://paperjs.org/](http://paperjs.org/) | [nyan](http://paperjs.org/examples/nyan-rainbow/), [Other demos](http://paperjs.org/examples) |
+| Data Visualization | [http://d3js.org/](http://d3js.org/) | obvious on homepage |
+| Physics | [http://wellcaffeinated.net/PhysicsJS/](http://wellcaffeinated.net/PhysicsJS/) | on homepage |
+| 2D | [http://cutjs.org/](http://cutjs.org/) | obvious on homepage |
+| 3D | [http://threejs.org/](http://threejs.org/) | [rubicks cube](https://www.google.com/logos/2014/rubiks/rubiks.html) / [more demos](http://threejs.org/examples/#webgl_kinect) |
+| 2D Game engine | [http://www.html5quintus.com/](http://www.html5quintus.com/) | obvious on site |
+| Voice recognition | [https://www.talater.com/annyang/](https://www.talater.com/annyang/) | homepage is demo |
+| Audio generator / visualization | [https://github.com/jeromeetienne/webaudiox](https://github.com/jeromeetienne/webaudiox) | [visualization](http://jeromeetienne.github.io/webaudiox/examples/analyser2canvas.html), [audio generator](http://jeromeetienne.github.io/webaudiox/examples/jsfx.html) |
+| Typography | [http://letteringjs.com/](http://letteringjs.com/) | links on homepage |
+
+Need more? [http://www.javascripting.com/](http://www.javascripting.com/)
+
 > ***Note:*** _This can be a pair programming activity or done independently._
 
 Now that you have static content being served out to clients let's add some flavor to it! For this exercise go ahead and pick one frontend technology to add to your site to make it more robust. It can be anything you like but some popular ideas:
