@@ -1,125 +1,129 @@
----
-title: Title of the Lesson
-type: lesson
-duration: "1:25"
-creator:
-    name: Micah Rich
-    city: LA
-competencies: Programming, Server Applications
----
-
-> #### *Guiding Questions When Using This Template*
->
-> - [ ] If there is an existing resource, is there enough content for an hour and fifteen minutes?
->   - [ ] Are there enough learning objectives?*
->   - [ ] Are the learning objectives specific enough?
->
-> - [ ] Are the learning objectives measurable?
->   - [ ] Do these learning objectives help students work toward the unit project?
->   - [ ] How will this lesson culminate? (final activity + conclusion)
->
-> Use this to provide guidance on what you should add to the existing resource
->
-> - [ ] What will instructors have to do to prepare for this lesson?
-> - [ ] What will students have to do to prepare for this lesson?
->
-> _\* We normally see ~3 objectives for this length of lesson, but you should adapt based on the topic / context._
-
-# Title of the Lesson
+# Static site with S3
 
 ### Objectives
 *After this lesson, students will be able to:*
 
-- Describe some concept
-- Explain how to do something
-- Do or build something
+- Describe S3 storage usages
+- Utilize S3, Route 53, and Cloudfront for static content
+- Create and upload static content for a website
 
 ### Preparation
 *Before this lesson, students should already be able to:*
 
-- Describe some concept
-- Explain how to do something
-- Do or build something
+- Describe the difference between static and dynamic websites
+- Write HTML, CSS, JS to build a functioning website
 
-## Section Title, clever (or not) Intro (20 mins)
+## S3 - Simple Storage Service Intro (20 mins)
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum fugiat autem voluptate officia voluptatum tempore repudiandae illum libero. Dolor aliquam minima sit velit, quis quisquam delectus explicabo nam id facilis.
+Amazon S3, or Simple Storage Service, is an implementation of cloud storage offered by Amazon. Using S3 you can store large amounts of static content needed for websites and apps. Files, or **Objects** as they are referred to in Amazon docs, are stored in seperate **Buckets** that can reach sizes of up to 5 Terabytes.
 
+![S3 Buckets](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/AWS_Simple_Icons_Storage_Amazon_S3_Bucket_with_Objects.svg/1024px-AWS_Simple_Icons_Storage_Amazon_S3_Bucket_with_Objects.svg.png)
+
+Each file/object in the bucket receives a unique **Key** from the user when added to the bucket. Think of it like a folder in your file system. When you try to have two files with the same name you are given the choice of either replacing the old file or giving the new file a new name. S3 buckets work in a similar way.
+
+#### But what does it mean?!
+This means S3 is basically a big file system where you can keep and access content!
+
+## Creating a static website (15 mins)
+
+One of the major uses of S3 is hosting a static website. S3 now has functionality built in to help with domain mapping which even allows you to use your custom domain name. S3 stands as a nice alternative to BitBalloon and other dropbox-esque services due to it's speed and custom nature.
+
+![S3 Static Website](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_Architecture_4b.png)
+
+To get our static site up and running we're going to be using not only S3 but also two other Amazon services. Route53 for DNS resolution and Amazon Cloudfront for CDN functionality.
+
+First we'll create our S3 buckets. We're going to be creating 3 different buckets for our site. Two will be linked to our domain and the 3rd will be for logs that S3 produces. This structure is recognized and utilized by S3 for static sites. **Important** Be sure to name the buckets the same name as your domain, whatever that may be!
+
+![Static Site Buckets](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_Architecture_1.png)
+
+By creating the buckets this way, Amazon will generate a URL according to that name:
+- http://example.com.s3-website-us-east-1.amazonaws.com/
+
+Lets jump into the [S3 management console](https://console.aws.amazon.com/s3/) and click the "Create Bucket" button.
+
+![Create Bucket](https://dl.dropboxusercontent.com/u/111919248/Screenshots/Screen%20Shot%202016-03-07%20at%206.44.07%20AM.png)
+![Name Bucket](https://dl.dropboxusercontent.com/u/111919248/Screenshots/Screen%20Shot%202016-03-07%20at%206.49.39%20AM.png)
+
+Rinse and repeat bucket creation process for **www.domainname.com** and **logs.domainname.com**
+
+Next we'll setup permissions for our buckets. Since this is a website we'll need parts of it to be accessible to clients. First, from the management console, click on the root domain bucket and click Properties.
+
+![Bucket Properties](https://dl.dropboxusercontent.com/u/111919248/Screenshots/Screen%20Shot%202016-03-07%20at%206.52.59%20AM.png)
+
+Click **Permissions** and then **Add Bucket Policy** to change who can access files. Next we're going to input some config options into the popup editor. Go ahead and copy and paste this JSON code into that popup:
+
+```json
+{
+  "Version":"2012-10-17",
+  "Statement": [{
+    "Sid": "Allow Public Access to All Objects",
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::example.com/*"
+  }
+ ]
+}
+```
+**Make sure to change the domain in the Resource value to match your bucket name!!!**
+
+![Bucket Policy](https://dl.dropboxusercontent.com/u/111919248/Screenshots/Screen%20Shot%202016-03-07%20at%206.57.34%20AM.png)
+
+Next enable logging from your root domain bucket. Click **Logging** in your bucket properties and edit the values like this:
+
+![Logging](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_ConfigureLogging.png)
+
+###Finally adding some content
+
+By now we should have our buckets set up and ready for static content, so let's upload some!
+
+First we're going to create two files on our computers to be uploaded, **index.html** and **error.html**.
+
+index.html
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>
-      Example
-    </title>
-  </head>
   <body>
-    <h1>
-      Example Page
-    </h1>
-    <p>
-      This is an example page.
-    </p>
+    <p>Hello, World!</p>
   </body>
 </html>
 ```
 
-![DOM Tree](http://www.computerhope.com/jargon/d/dom1.jpg)
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem laboriosam pariatur ab cum temporibus, velit expedita? Pariatur illum, iusto animi iste consectetur quam voluptatem provident! Velit molestias doloremque error harum.
-
-#### Some non-section heading that helps break up the content
-Natus officia maiores dolores libero quam nobis!
-
-## Demo of Something (15 mins)
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere dignissimos totam deleniti architecto porro, nisi. Laudantium repellat animi vero. Illo expedita deserunt officia iure quidem saepe culpa, aut, laborum consequatur.
-
-```ruby
-def lorem
-  return 'some stuff'
-end
+error.html
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>This is an error page.</p>
+  </body>
+</html>
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus eligendi nemo eius quo, soluta maxime provident temporibus aperiam eveniet eum. Non, soluta error veritatis pariatur praesentium beatae reprehenderit, numquam quaerat. Lorem ipsum dolor sit amet.
+Save those files somewhere on your local computer. Both of these files are recognized by S3 when we enable Static Web Hosting.
 
-Consectetur adipisicing elit. Facere dignissimos totam deleniti architecto porro, nisi. Laudantium repellat animi vero. Illo expedita deserunt officia iure quidem saepe culpa, aut, laborum consequatur.
+Next we're going to upload these files to our root domain bucket. From the management console click the **Actions** dropdown and select **Upload**. You can then either drag and drop or select the two files to upload.
 
-```ruby
-def another_lorem
-  this = some_method(0+2)
-  return this.to_json
-end
-```
+![Uploading files](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_HostingStaticWebsite_1.png)
 
-## Title of Some Thingy - Codealong (15 mins)
+After you find the files and click **Start upload** it should look like this:
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere dignissimos totam deleniti architecto porro, nisi. Laudantium repellat animi vero. Illo expedita deserunt officia iure quidem saepe culpa, aut, laborum consequatur.
+![Upload complete](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_HostingStaticWebsite_2.png)
 
-```ruby
-def lorem
-  return 'some stuff'
-end
-```
+Finally we need to configure one more aspect of our bucket, enabling Static Website Hosting. Back at the S3 management console open your root domain bucket and open Properties. Then open the Static Website Hosting section. Check the **Enable website hosting** option and enter in the information for your two files as such:
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus eligendi nemo eius quo, soluta maxime provident temporibus aperiam eveniet eum. Non, soluta error veritatis pariatur praesentium beatae reprehenderit, numquam quaerat. Lorem ipsum dolor sit amet.
+![Static site settings](http://docs.aws.amazon.com/gettingstarted/latest/swh/images/AWS_StaticWebsiteHosting_ConfigureAmazonS3Website_1.png)
 
-Consectetur adipisicing elit. Facere dignissimos totam deleniti architecto porro, nisi. Laudantium repellat animi vero. Illo expedita deserunt officia iure quidem saepe culpa, aut, laborum consequatur.
-
-```ruby
-def another_lorem
-  this = some_method(0+2)
-  return this.to_json
-end
-```
+Click Save and you're done! You've just hosted a static website on S3, nice job!
 
 ## Independent Practice (20 minutes)
 
 > ***Note:*** _This can be a pair programming activity or done independently._
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis magnam voluptas, modi at harum minus voluptate qui consequatur porro amet deserunt quibusdam nihil rerum fugit, accusantium omnis totam! Vitae, corrupti.
+Now that you have static content being served out to clients let's add some flavor to it! For this exercise go ahead and pick one frontend technology to add to your site to make it more robust. It can be anything you like but some popular ideas:
 
-## Conclusion (5 mins)
-- Ask some questions
-- See if anyone learned what they were supposed to
-- See if you did a good job by teaching them stuff
+- Angular
+- Jquery
+- D3
+- Phaser
+
+Using that technology go ahead and try and code something simple but brand new. Then upload it to S3 and test it out! Now get those fingers moving!!
