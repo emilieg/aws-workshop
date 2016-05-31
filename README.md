@@ -28,5 +28,6 @@ The EB portal can be used to manage our already created apps or to create new on
 
 ### Installing the eb-cli
 
-
-## Independent Practice (20 minutes)
+```bash
+brew install awsebcli
+```
